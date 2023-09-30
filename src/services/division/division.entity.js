@@ -62,7 +62,7 @@ export const singleDivision = ({ db }) => async (req, res) => {
       }
     };
 
-
+ //Update division
 export const updateDivision = ({ db }) => async (req, res) => {
   try {
     const { id:_id } = req.body;
@@ -70,7 +70,6 @@ export const updateDivision = ({ db }) => async (req, res) => {
     const division = await db.update({
       table: Division, key: {
         _id, body: {...req.body}
-
       }
     });
     if (!division) return res.status(400).send('Update failed');
