@@ -64,3 +64,18 @@ export const deletePlace = ({ db }) => async (req, res) => {
 
   }
 }
+
+
+export const UpdatePlce = ({ db }) => async (req, res) => {
+  try {
+    if (!req.params.id) return res.status(400).send('Id missing in request params');
+    const updatedData = await db.update({ table: Place, key: { id: req.params.id, body: { ...req.body } } });
+    if (!updatedData) return res.status(400).send('Bad request');
+    res.status(200).send(updatedData)
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Something wents wrong");
+
+  }
+}

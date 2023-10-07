@@ -1,5 +1,5 @@
 import { auth, checkRole } from "../middlewares";
-import {  deletePlace, getPlaces, register, singlePlace } from "./place.entity";
+import {  UpdatePlce, deletePlace, getPlaces, register, singlePlace } from "./place.entity";
 
 export default function place() {
   /**
@@ -28,4 +28,12 @@ export default function place() {
    * @response {Object} 200 - the new user.
    */
   this.route.delete("/place/:id", deletePlace(this));
+
+
+  /**
+   * PATCH /place/:id
+   * @description This route is used to create a user.
+   * @response {Object} 200 - the new user.
+   */
+  this.route.patch("/place/:id", UpdatePlce(this));
 }
