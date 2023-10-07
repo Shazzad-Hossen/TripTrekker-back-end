@@ -23,7 +23,7 @@ export const getPlaces =
     async (req, res) => {
       const places = await db.find({
         table: Place,
-        key: { query: req.query, allowedQuery: allowedQuery },
+        key: { query: req.query, allowedQuery: allowedQuery, populate: { path:'division'} },
       });
       if (!places) return res.status(400).send('Bad request');
       res.status(200).send(places);
@@ -47,4 +47,20 @@ export const singlePlace = ({ db }) => async (req, res) => {
         res.status(500).send("Something wents wrong");
 
       }
-    }
+}
+
+
+export const deletePlace = ({ db }) => async (req, res) => {
+  try {
+    if (!req.params.id) return res.status(400).send('Id missing in request params');
+    const place = await db.remove({ table: Place, key: { id: req.params.id } });
+    if (!place) return res.status(400).send('Bad request');
+    res.status(200).send(place)
+
+
+  } catch (error) {
+     console.log(error);
+     res.status(500).send("Something wents wrong");
+
+  }
+}
