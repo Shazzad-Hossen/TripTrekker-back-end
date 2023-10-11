@@ -36,7 +36,7 @@ export const register = ({ db }) => async (req, res) => {
 export const login = ({ db, settings }) => async (req, res) => {
   try {
     if (!req.body.email || !req.body.password) return res.status(400).send('Bad requests');
-    const user = await db.findOne({ table: User, key: { email: req.body.email } });
+    const user = await db.findOne({ table: User, key: { email: req.body.email, populate: { path: 'agency'} } });
     if (!user) return res.status(401).send('NO user exist with this email');
     const isValid = await bcrypt.compare(req.body.password, user.password);
     if (!isValid) return res.status(401).send('Unauthorized');
@@ -212,3 +212,5 @@ export const remove = ({ db }) => async (req, res) => {
     res.status(500).send({ message: 'Something went wrong' });
   }
 };
+
+

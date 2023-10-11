@@ -25,7 +25,7 @@ import * as operations from './controllers/operations';
 import settings from '../settings.json';
 
 // Controllers
-import { imageUp } from './controllers/imageUp';
+import { fileUp } from "./controllers/imageUp";
 import gracefullShutdown from './controllers/gracefullShutdown';
 import { driverCache } from './controllers/driverCache';
 
@@ -36,7 +36,7 @@ export default class App {
     this.config = settings;
     this.search = new SearchCtrl();
     this.mail = NewMailer(this.config);
-    this.imageUp = imageUp;
+    this.fileUp = fileUp;
     this.db = operations;
     this.events = {};
     this.wsMiddlewares = [];
@@ -150,11 +150,11 @@ export default class App {
       ...this.express,
       route: this.router,
       ws: this.socket,
-      imageUp: this.imageUp,
+      fileUp: this.fileUp,
       lyra: this.search,
       db: this.db,
       mail: this.mail,
-      settings: this.config
+      settings: this.config,
     });
   }
 

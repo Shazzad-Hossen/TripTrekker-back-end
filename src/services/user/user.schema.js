@@ -1,10 +1,10 @@
-import { Schema, model } from 'mongoose';
+import mongoose, { Schema, model } from 'mongoose';
 import paginate from 'mongoose-paginate-v2';
 
 const schema = new Schema(
   {
     fullName: { type: String, required: true },
-    email: { type: String, required: true, unique:true },
+    email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     role: {
       type: String,
@@ -18,7 +18,8 @@ const schema = new Schema(
     street: { type: String },
     city: { type: String },
     zip: { type: Number },
-    verified: {type: Boolean, default: false}
+    verified: { type: Boolean, default: false },
+    agency: { type: mongoose.Schema.Types.ObjectId, ref: "Agency" },
   },
   { timestamps: true }
 );

@@ -79,3 +79,5 @@ export const UpdatePlce = ({ db }) => async (req, res) => {
 
   }
 }
+
+
