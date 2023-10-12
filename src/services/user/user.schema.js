@@ -9,7 +9,7 @@ const schema = new Schema(
     role: {
       type: String,
       default: "user",
-      enum: ["user", "super-admin", "admin", "hotel-owner", "agency"],
+      enum: ["user", "super-admin", "admin", "hotel", "agency"],
     },
     avatar: { type: String, default: "" },
     gender: { type: String, enum: ["male", "female", "other"] },
@@ -20,6 +20,7 @@ const schema = new Schema(
     zip: { type: Number },
     verified: { type: Boolean, default: false },
     agency: { type: mongoose.Schema.Types.ObjectId, ref: "Agency" },
+    hotel: { type: mongoose.Schema.Types.ObjectId, ref: "Hotel" },
   },
   { timestamps: true }
 );
