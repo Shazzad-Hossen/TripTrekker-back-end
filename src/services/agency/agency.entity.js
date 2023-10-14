@@ -21,6 +21,8 @@ export const registerAgency = ({ db }) => async (req, res) => {
 
 export const updateAgency = ({ db }) => async (req, res) => {
   try {
+
+
     const { id } = req.body.id;
     delete req.body.id;
     const agency = await db.update({ table: Agency, key: {id, body: { ...req.body } }});
@@ -51,6 +53,7 @@ export const getALLAgencies = ({ db }) => async (req, res) => {
 
 export const getSingleAgencyDetails = ({ db }) => async (req, res) => {
   try {
+   
 
     if (!req.params.id) return res.status(400).send('Agency id missing in request params');
     const agency = await db.findOne({ table: Agency, key: { id: req.params.id , populate: { path: 'user', select: 'avatar fullName email city street zip phone'} } });
@@ -78,3 +81,4 @@ export const removeAgency = ({ db }) => async (req, res) => {
 
   }
 }
+

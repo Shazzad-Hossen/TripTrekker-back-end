@@ -3,7 +3,7 @@ import paginate from "mongoose-paginate-v2";
 
 const schema = new Schema(
   {
-    logo: { type: String, default:'' },
+    logo: { type: String, default: "" },
     name: { type: String, required: true },
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     email: { type: String, required: true },
@@ -15,7 +15,11 @@ const schema = new Schema(
         path: { type: String, required: true },
       },
     ],
-    status: { type: String, enum: ["approved", "pending", "declined"], default:'pending' },
+    status: {
+      type: String,
+      enum: ["approved", "pending", "declined", "banned"],
+      default: "pending",
+    },
   },
   { timestamps: true }
 );

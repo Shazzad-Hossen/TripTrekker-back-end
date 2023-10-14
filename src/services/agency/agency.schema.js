@@ -15,7 +15,7 @@ const schema = new Schema(
         path: { type: String, required: true },
       },
     ],
-    status: { type: String, enum: ["approved", "pending", "declined"], default:'pending' },
+    status: { type: String, enum: ["approved", "pending", "declined",'banned'], default:'pending' },
   },
   { timestamps: true }
 );
