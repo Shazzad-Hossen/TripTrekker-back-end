@@ -2,7 +2,7 @@
 import Place from './place.schema';
 
 const allowedQuery = new Set([
-  "division",
+  "division","paginate"
 ]);
 export const register = ({ db }) => async (req, res) => {
   try {
@@ -23,7 +23,7 @@ export const getPlaces =
     async (req, res) => {
       const places = await db.find({
         table: Place,
-        key: { query: req.query, allowedQuery: allowedQuery, populate: { path:'division'} },
+        key: { query: req.query, allowedQuery: allowedQuery, populate: { path:'division'}, paginate: req.query.paginate === 'true'  },
       });
       if (!places) return res.status(400).send('Bad request');
       res.status(200).send(places);

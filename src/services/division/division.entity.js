@@ -19,7 +19,7 @@ export const getDivision =
   ({ db }) =>
   async (req, res) => {
     try {
-      const division = await db.find({ table: Division });
+      const division = await db.find({ table: Division, key: {paginate: req.query.paginate === 'true' } });
       if (!division) return res.status(400).send('Failed to get Division data');
       res.status(200).send(division)
     } catch (error) {
