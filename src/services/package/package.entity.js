@@ -2,7 +2,7 @@ import Package from './package.schema';
 import User from "../user/user.schema";
 
 
-const allowedQuery = new Set(['status','type', 'sortBy', 'status']);
+const allowedQuery = new Set(['status','type', 'sortBy', 'status', 'paginate', 'place']);
 
 export const registerPackage = ({ db }) => async (req, res) => {
   try {
@@ -29,7 +29,7 @@ export const registerPackage = ({ db }) => async (req, res) => {
 export const getAllPackages = ({ db }) => async (req, res) => {
   if (req.query.type !== "agency" && req.query.type !== "hotel") delete req.query.type;
 
-  const packages = await db.find({ table: Package, key: {query: req.query, allowedQuery: allowedQuery, populate: { path: 'agency hotel', select: 'name'} } });
+  const packages = await db.find({ table: Package, key: {query: req.query, paginate: req.query.paginate==='true', allowedQuery: allowedQuery, populate: { path: 'agency hotel', select: 'name'} } });
   if (!packages) return res.status(400).send("Bad Request");
   res.status(200).send(packages);
   try {

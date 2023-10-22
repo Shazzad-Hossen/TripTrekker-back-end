@@ -37,7 +37,7 @@ export const getPlaces =
 export const singlePlace = ({ db }) => async (req, res) => {
   try {
     if (!req.params.id) return res.status(400).send('Id missing in request params');
-    const place =await db.findOne({ table: Place, key: { id: req.params.id } });
+    const place =await db.findOne({ table: Place, key: { id: req.params.id, populate: { path:'division'} } });
     if (!place) return res.status(400).send('Something wents wrong');
     res.status(200).send(place)
 
