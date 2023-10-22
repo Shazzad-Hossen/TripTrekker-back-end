@@ -3,6 +3,7 @@ import demo from './demo/demo';
 import division from './division/division';
 import uploader from './fileUploader/uploader';
 import hotel from './hotel/hotel';
+import packages from './package/package';
 import place from './place/place';
 import user from './user/user';
 
@@ -14,4 +15,5 @@ export const services = (app) => {
   app.configure(uploader);
   app.configure(agency);
   app.configure(hotel);
+  app.configure(packages);
 };
