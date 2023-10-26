@@ -153,6 +153,7 @@ const setPassword = async ({ oldPass, newPass, user }) => {
  * @returns It returns the updated data.
  */
 export const updateOwn = ({ db }) => async (req, res) => {
+
   try {
     if (req?.body?.password && req?.body?.newPassword) {
       req.body.password = await setPassword({
@@ -165,6 +166,7 @@ export const updateOwn = ({ db }) => async (req, res) => {
     Object.keys(req.body).forEach((k) => (req.user[k] = req.body[k]));
     const user = await db.save(req.user);
     if (!user) return res.status(400).send('Profile update unsuccessfull');
+    await db.populate(user, { path: 'hotel agency' });
     res.status(200).send(user);
   }
   catch (err) {

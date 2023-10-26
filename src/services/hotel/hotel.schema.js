@@ -8,6 +8,8 @@ const schema = new Schema(
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     email: { type: String, required: true },
     lisence: { type: String, required: true },
+    division: { type: mongoose.Schema.Types.ObjectId, ref: "Division" },
+    place: { type: mongoose.Schema.Types.ObjectId, ref: "Place" },
     address: { type: String, required: true },
     documents: [
       {

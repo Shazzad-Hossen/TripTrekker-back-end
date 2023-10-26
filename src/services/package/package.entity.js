@@ -43,7 +43,7 @@ export const getAllPackages = ({ db }) => async (req, res) => {
 
 export const getSinglePackage = ({ db }) => async (req, res) => {
   if (!req.params.id) return res.status(400).send('Bad Request');
-  const packages = await db.findOne({ table: Package, key: {id: req.params.id } });
+  const packages = await db.findOne({ table: Package, key: {id: req.params.id, populate: { path:'division place agency hotel'} } });
   if (!packages) return res.status(400).send("Bad Request");
   res.status(200).send(packages);
   try {
@@ -61,6 +61,7 @@ export const updatePackage = ({ db }) => async (req, res) => {
   const response = await db.findOne({ table: Package, key: { id: req.body.id } });
   Object.keys(req.body).forEach((k) => (response[k] = req.body[k]));
   await db.save(response);
+  await db.populate(response, { path: "division place agency hotel" });
   res.status(200).send(response);
 
 

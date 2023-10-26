@@ -1,6 +1,6 @@
 import Hotel from './hotel.schema';
 import User from "../user/user.schema";
-const allowedQuery = new Set(['status']);
+const allowedQuery = new Set(['status','place', 'paginate']);
 export const registerHotel = ({ db }) => async (req, res) => {
   try {
 
@@ -44,7 +44,7 @@ export const getALLHotels = ({ db }) => async (req, res) => {
 
     if( req.query.status==='all') delete req.query.status
 
-    const hotel = await db.find({ table: Hotel , key: { query: req.query,  allowedQuery: allowedQuery, populate: {path: 'user'}} });
+    const hotel = await db.find({ table: Hotel , key: { query: req.query,  allowedQuery: allowedQuery, paginate: req.query.paginate==='true', populate: {path: 'user division place'}} });
     if (!hotel) return res.status(400).send('Bad Request');
     res.status(200).send(hotel)
   } catch (error) {
