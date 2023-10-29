@@ -2,7 +2,7 @@ import Package from './package.schema';
 import User from "../user/user.schema";
 
 
-const allowedQuery = new Set(['status','type', 'sortBy', 'status', 'paginate', 'place']);
+const allowedQuery = new Set(['status','type', 'sortBy', 'status', 'paginate', 'place', 'hotel', 'agency']);
 
 export const registerPackage = ({ db }) => async (req, res) => {
   try {

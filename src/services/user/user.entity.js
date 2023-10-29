@@ -167,6 +167,7 @@ export const updateOwn = ({ db }) => async (req, res) => {
     const user = await db.save(req.user);
     if (!user) return res.status(400).send('Profile update unsuccessfull');
     await db.populate(user, { path: 'hotel agency' });
+    console.log(user);
     res.status(200).send(user);
   }
   catch (err) {

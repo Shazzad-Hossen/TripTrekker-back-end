@@ -11,6 +11,8 @@ const schema = new Schema(
     division: { type: mongoose.Schema.Types.ObjectId, ref: "Division" },
     place: { type: mongoose.Schema.Types.ObjectId, ref: "Place" },
     address: { type: String, required: true },
+    latitude: { type: Number, default: 23.808133191050228 },
+    longitude: { type: Number, default: 90.4152417524026 },
     documents: [
       {
         name: { type: String, required: true },
