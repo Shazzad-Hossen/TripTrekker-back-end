@@ -4,10 +4,17 @@ import paginate from "mongoose-paginate-v2";
 const schema = new Schema(
   {
     type: { type: String, required: true },
-    status: { type: String, enum: ['pending', 'paid', 'processing', 'confirmed', 'cancelled']},
+    status: {
+      type: String,
+      enum: ["pending", "paid", "processing", "confirmed", "cancelled"],
+    },
     package: { type: mongoose.Schema.Types.ObjectId, ref: "Package" },
     person: { type: Number },
-    date: { type: Date }
+    room: { type: Number },
+    date: { type: Date },
+    endDate: { type: Date },
+    duration: { type: Number },
+    cost: { type: Number, default: 0 }
   },
   { timestamps: true }
 );
