@@ -25,7 +25,6 @@ export function checkRole(allowed) {
  */
 export async function auth(req, res, next) {
   try {
-
     const token =
       req.cookies?.TripTrekker ||
       (process.env.NODE_ENV === "development"

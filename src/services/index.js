@@ -5,6 +5,7 @@ import uploader from './fileUploader/uploader';
 import hotel from './hotel/hotel';
 import order from './order/order';
 import packages from './package/package';
+import payment from './payment/payment';
 import place from './place/place';
 import user from './user/user';
 
@@ -18,4 +19,5 @@ export const services = (app) => {
   app.configure(hotel);
   app.configure(packages);
   app.configure(order);
+  app.configure(payment);
 };

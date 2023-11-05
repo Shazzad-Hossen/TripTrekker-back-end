@@ -7,14 +7,19 @@ const schema = new Schema(
     status: {
       type: String,
       enum: ["pending", "paid", "processing", "confirmed", "cancelled"],
+      default: "pending",
     },
     package: { type: mongoose.Schema.Types.ObjectId, ref: "Package" },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    userId: { type: String },
+    agency: { type: String },
+    hotel: { type: String },
     person: { type: Number },
     room: { type: Number },
     date: { type: Date },
     endDate: { type: Date },
     duration: { type: Number },
-    cost: { type: Number, default: 0 }
+    cost: { type: Number, default: 0 },
   },
   { timestamps: true }
 );
@@ -23,7 +28,6 @@ schema.plugin(paginate);
 schema.methods.toJSON = function () {
   const obj = this.toObject();
   delete obj.__v;
-  delete obj.createdAt;
   delete obj.updatedAt;
   delete obj.password;
   delete obj.notifySubs;
