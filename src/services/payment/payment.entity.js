@@ -36,7 +36,7 @@ export const paymentInit = ({ db, settings }) => async (req, res) => {
        ship_country: "Bangladesh",
      };
    const sslcz = new SSLCommerzPayment(settings.SSL_STORE_ID, settings.SSL_STORE_PASSWORD, settings.SSL_IS_LIVE);
-   sslcz.init(data).then((apiResponse) => {
+    sslcz.init(data).then((apiResponse) => {
      // Redirect the user to payment gateway
      let GatewayPageURL = apiResponse.GatewayPageURL;
      if (apiResponse.status === 'SUCCESS') res.status(201).send(GatewayPageURL);
@@ -55,7 +55,7 @@ export const success = ({db, settings}) => async (req, res) => {
   try {
 
     const sslcz = new SSLCommerzPayment(settings.SSL_STORE_ID, settings.SSL_STORE_PASSWORD, settings.SSL_IS_LIVE);
-     sslcz.validate({ val_id:  req.body.val_id }).then( async(data) => {
+    sslcz.validate({ val_id: req.body.val_id }).then(async (data) => {
 
        if (data.status === 'VALID') {
          const {
@@ -72,7 +72,7 @@ export const success = ({db, settings}) => async (req, res) => {
          const order = await db.findOne({ table: Order, key: { id: tran_id } });
          order.status = 'paid';
          await db.save(order);
-         await db.create({ table: Payment, key: { tran_date, tran_id, val_id, amount, store_amount, currency, bank_tran_id, card_issuer, card_brand, user: order.user.toString(), order: order._id.toString() } });
+         await db.create({ table: Payment, key: { tran_date, tran_id, val_id, amount, store_amount, currency, bank_tran_id, card_issuer, card_brand, user: order.user.toString(), order: order._id.toString(), package: order.package.toString() } });
          res.redirect(`${settings.FRONTEND_URL}/dashboard/orders?status=success`);
        }
      });
@@ -107,3 +107,72 @@ export const cancelled =
       res.status(500).send("Something wents wrong");
     }
   };
+
+export const getAllTransaction = ({ db }) => async (req, res) => {
+  try {
+    const transaction = await db.find({ table: Payment, key: { populate: { path: 'order user package'}} });
+    if (!transaction) return res.status(400).send('Bad request');
+    res.status(200).send(transaction);
+
+    } catch (error) {
+       console.log(error);
+       res.status(500).send("Something wents wrong");
+
+    }
+}
+
+
+export const refundReq = ({ db }) => async (req, res) => {
+  try {
+    if (!req.body.id) return res.status(400).send('Bad Request');
+    const payment = await db.findOne({ table: Payment, key: { id: req.body.id } });
+    if (!payment) return res.status(401).send('Forbidden');
+    payment.status = 'requested';
+    await db.save(payment);
+    return res.status(200).send(payment);
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Something wents wrong");
+
+  }
+}
+
+export const initiateRefund = ({ db,settings }) => async (req, res) => {
+  try {
+    if (!req.body.id || !req.body.status) return res.status(400).send('Bad Request');
+    if (req.body.status === 'cancelled') {
+      const payment = await db.findOne({ table: Payment, key: { id: req.body.id } });
+      if (!payment) return res.status(401).send('Forbidden');
+      payment.status = "cancelled";
+      await db.save(payment);
+      return res.status(200).send('Refund Request Successfully Cancelled');
+    }
+    else if (req.body.status === 'refunded') {
+       const payment = await db.findOne({ table: Payment, key: { id: req.body.id } });
+       if (!payment) return res.status(401).send('Forbidden');
+       const sslcz = new SSLCommerzPayment(settings.SSL_STORE_ID, settings.SSL_STORE_PASSWORD, settings.SSL_IS_LIVE);
+      sslcz
+        .initiateRefund({
+          refund_amount: payment?.amount,
+          refund_remarks: "Refunded by Admin",
+          bank_tran_id: payment?.bank_tran_id,
+          refe_id: payment?._id.toString(),
+        })
+        .then(async(data) => {
+          if (data?.status === 'success') {
+            payment.status = 'refunded';
+            await db.save(payment);
+            return res.status(200).send('Refund successfull');
+          }
+          else return res.status(400).send(data.errorReason);
+        });
+    }
+    else return res.status(200).send('Operation Failed');
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Something wents wrong");
+
+  }
+}

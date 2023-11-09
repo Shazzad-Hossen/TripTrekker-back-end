@@ -14,6 +14,9 @@ const schema = new Schema(
     card_brand: { type: String },
     order: { type: mongoose.Schema.Types.ObjectId, ref: "Order" },
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    package: { type: mongoose.Schema.Types.ObjectId, ref: "Package" },
+    isRefunded: { type: Boolean, default: false },
+    status: { type: String, enum: ['requested', 'refunded', 'cancelled', 'request'], default: 'request'},
   },
   { timestamps: true }
 );
@@ -22,7 +25,6 @@ schema.plugin(paginate);
 schema.methods.toJSON = function () {
   const obj = this.toObject();
   delete obj.__v;
-  delete obj.createdAt;
   delete obj.updatedAt;
   delete obj.password;
   delete obj.notifySubs;
