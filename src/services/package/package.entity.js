@@ -2,9 +2,9 @@ import Package from './package.schema';
 import User from "../user/user.schema";
 
 
-const allowedQuery = new Set(['status','type', 'sortBy', 'status', 'paginate', 'place', 'hotel', 'agency', 'hotel']);
+const allowedQuery = new Set(['status','type', 'sortBy', 'status', 'paginate', 'place', 'hotel', 'agency', 'hotel', 'limit', 'search', 'id']);
 
-export const registerPackage = ({ db }) => async (req, res) => {
+export const registerPackage = ({ db, lyra }) => async (req, res) => {
   try {
 
 
@@ -13,8 +13,9 @@ export const registerPackage = ({ db }) => async (req, res) => {
       night: req.body.night,
     };
     delete req.body.duration
-    const result = await db.create({ table: Package, key: { ...req.body, duration } });
+    const result = await db.create({ table: Package, key: { ...req.body, duration, populate: { path: 'agency hotel place division', select: 'name' } } });
     if (!result) return res.status(400).send('Bad Request');
+    await lyra.insert('package', {id: result._id.toString(), name: req.body.name})
     res.status(201).send(result);
 
 
@@ -26,10 +27,16 @@ export const registerPackage = ({ db }) => async (req, res) => {
 }
 
 
-export const getAllPackages = ({ db }) => async (req, res) => {
+export const getAllPackages = ({ db, lyra }) => async (req, res) => {
   if (req.query.type !== "agency" && req.query.type !== "hotel") delete req.query.type;
+  if (req.query.search) {
+    const data = await lyra.search('package', { term: req.query.search });
+    const Ids = data.hits.map(elem => elem.id);
+    req.query.id = { $in: Ids };
+    delete req.query.search;
+  }
 
-  const packages = await db.find({ table: Package, key: {query: req.query, paginate: req.query.paginate==='true', allowedQuery: allowedQuery, populate: { path: 'agency hotel', select: 'name'} } });
+  const packages = await db.find({ table: Package, key: {query: req.query, paginate: req.query.paginate==='true', allowedQuery: allowedQuery, populate: { path: 'agency hotel place division', select: 'name'} } });
   if (!packages) return res.status(400).send("Bad Request");
   res.status(200).send(packages);
   try {

@@ -1,6 +1,6 @@
 import Hotel from './hotel.schema';
 import User from "../user/user.schema";
-const allowedQuery = new Set(['status','place', 'paginate']);
+const allowedQuery = new Set(['status','place', 'paginate', 'limit']);
 export const registerHotel = ({ db }) => async (req, res) => {
   try {
 
