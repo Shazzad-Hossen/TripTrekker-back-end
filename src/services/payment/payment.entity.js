@@ -2,6 +2,8 @@
 const SSLCommerzPayment = require("sslcommerz-lts");
 import Payment from './payment.schema'
 import Order from "../order/order.schema";
+const allowedQuery = new Set(['user']);
+
 
 export const paymentInit = ({ db, settings }) => async (req, res) => {
   try {
@@ -110,7 +112,9 @@ export const cancelled =
 
 export const getAllTransaction = ({ db }) => async (req, res) => {
   try {
-    const transaction = await db.find({ table: Payment, key: { populate: { path: 'order user package'}} });
+    console.log(req.user);
+    if (req.user.role === 'user') req.query.user = req.user._id.toString();
+    const transaction = await db.find({ table: Payment, key: { allowedQuery: allowedQuery, query: req.query, populate: { path: 'order user package'}} });
     if (!transaction) return res.status(400).send('Bad request');
     res.status(200).send(transaction);
 
