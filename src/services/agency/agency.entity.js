@@ -22,11 +22,12 @@ export const registerAgency = ({ db }) => async (req, res) => {
 export const updateAgency = ({ db }) => async (req, res) => {
   try {
 
+    const agency = await db.findOne({ table: Agency, key: { id: req.body.id } });
+    console.log(agency);
 
-    const { id } = req.body.id;
-    delete req.body.id;
-    const agency = await db.update({ table: Agency, key: {id, body: { ...req.body } }});
-    if (!agency) return res.status(400).sebd('Bad Request');
+    if (!agency) return res.status(400).send('Bad Request');
+    Object.keys(req.body).map(key => agency[key] = req.body[key]);
+    await db.save(agency);
     const user = await db.populate(req.user, { path: 'agency' });
     res.status(200).send(user);
   } catch (error) {
@@ -53,7 +54,7 @@ export const getALLAgencies = ({ db }) => async (req, res) => {
 
 export const getSingleAgencyDetails = ({ db }) => async (req, res) => {
   try {
-   
+
 
     if (!req.params.id) return res.status(400).send('Agency id missing in request params');
     const agency = await db.findOne({ table: Agency, key: { id: req.params.id , populate: { path: 'user', select: 'avatar fullName email city street zip phone'} } });

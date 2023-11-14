@@ -85,13 +85,13 @@ export const me = () => async (req, res) => {
  */
 export const logout = ({ settings }) => async (req, res) => {
   try {
-    res.clearCookie(settings.secret, {
+    res.clearCookie(settings.SECRET, {
       httpOnly: true,
-      ...settings.useHTTP2 && {
-        sameSite: 'None',
+      ...(settings.useHTTP2 && {
+        sameSite: "None",
         secure: true,
-      },
-      expires: new Date(Date.now())
+      }),
+      expires: new Date(Date.now()),
     });
     return res.status(200).send('Logout successful');
   }
