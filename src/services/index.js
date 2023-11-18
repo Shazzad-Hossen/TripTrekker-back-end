@@ -1,4 +1,5 @@
 import agency from './agency/agency';
+import dashboard from './dashboard/dashboard';
 import demo from './demo/demo';
 import division from './division/division';
 import uploader from './fileUploader/uploader';
@@ -20,4 +21,5 @@ export const services = (app) => {
   app.configure(packages);
   app.configure(order);
   app.configure(payment);
+  app.configure(dashboard);
 };
