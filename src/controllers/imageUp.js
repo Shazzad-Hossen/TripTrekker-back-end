@@ -17,7 +17,7 @@ export const fileUp = async link => {
     const extIndex = link.lastIndexOf('.');// Check if link has a file extension
     if (extIndex === -1) throw new Error('Link does not contain a file extension.');
     const ext = link.substring(extIndex + 1);// Get file extension
-    if (!['png', 'jpg', 'jpeg', 'svg', 'gif', 'avif', 'webp', 'pdf'].includes(ext.toLowerCase())) throw new Error('Invalid file extension.');// Check if file extension is valid
+    if (!['png', 'jpg', 'jpeg', 'svg', 'gif', 'avif', 'webp', 'pdf', 'jfif'].includes(ext.toLowerCase())) throw new Error('Invalid file extension.');// Check if file extension is valid
     const fileName = randomBytes(16).toString('hex') + '.' + ext;// Generate a unique file name
     if (!fs.existsSync(fileDir)) fs.mkdirSync(fileDir);
     const buffer = fs.readFileSync(link);// Read image file from link

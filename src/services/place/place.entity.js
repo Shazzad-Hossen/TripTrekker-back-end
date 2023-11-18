@@ -2,7 +2,7 @@
 import Place from './place.schema';
 
 const allowedQuery = new Set([
-  "division","paginate"
+  "division","paginate", 'page',
 ]);
 export const register = ({ db }) => async (req, res) => {
   try {
