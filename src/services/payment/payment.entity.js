@@ -112,7 +112,6 @@ export const cancelled =
 
 export const getAllTransaction = ({ db }) => async (req, res) => {
   try {
-    console.log(req.user);
     if (req.user.role === 'user') req.query.user = req.user._id.toString();
     const transaction = await db.find({ table: Payment, key: { allowedQuery: allowedQuery, query: req.query, populate: { path: 'order user package'}} });
     if (!transaction) return res.status(400).send('Bad request');

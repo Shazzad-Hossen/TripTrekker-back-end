@@ -1,5 +1,5 @@
 
-import Place from './place.schema';
+import Place from "./place.schema";
 
 const allowedQuery = new Set([
   "division","paginate", 'page',

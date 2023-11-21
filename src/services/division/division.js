@@ -11,7 +11,7 @@ export default function division() {
 
   /**
    * GET /division
-   * @description This route is used to create a user.
+   * @description This route is used to get all division.
    * @response {Object} 200 - the new user.
    */
   this.route.get("/division", getDivision(this));
