@@ -1,5 +1,6 @@
 import Order from '../order/order.schema';
 import Package from '../package/package.schema';
+import User from "../user/user.schema";
 export const userDashboardData = ({ db }) => async (req, res) => {
   try {
 const userId = req.user._id.toString(); // Assuming req.user contains the user information
@@ -135,3 +136,34 @@ export const hotelDashboardData = () => async (req, res) => {
     res.status(500).send("Something wents wrong");
   }
 };
+
+
+
+
+export const adminDashboardData = () => async (req, res) => {
+  try {
+    const result = await User.aggregate([
+      {
+        $group: {
+          _id: null,
+          totalUser: {
+            $sum: { $cond: [{ $eq: ["$role", "user"] }, 1, 0] },
+          },
+          totalAgency: {
+            $sum: { $cond: [{ $eq: ["$role", "agency"] }, 1, 0] },
+          },
+          totalHotel: {
+            $sum: { $cond: [{ $eq: ["$role", "hotel"] }, 1, 0] },
+          },
+        },
+      },
+    ]);
+
+    res.status(200).send(result[0]);
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Something wents wrong");
+
+  }
+}

@@ -1,5 +1,5 @@
 import { auth } from "../middlewares";
-import { agencyDashboardData, hotelDashboardData, userDashboardData } from "./dashboard.entity";
+import { adminDashboardData, agencyDashboardData, hotelDashboardData, userDashboardData } from "./dashboard.entity";
 
 export default function dashboard() {
   /**
@@ -22,5 +22,12 @@ export default function dashboard() {
    * @response {Object} 200 - new order data.
    */
   this.route.get("/dashboard-hotel", auth, hotelDashboardData(this));
+
+  /**
+   * GET /dashboard-admin
+   * @description This route is used to get Admin Dashboard data.
+   * @response {Object} 200 - new order data.
+   */
+  this.route.get("/dashboard-admin", auth, adminDashboardData(this));
 }
 
