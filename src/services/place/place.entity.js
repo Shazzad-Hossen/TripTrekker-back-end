@@ -2,12 +2,16 @@
 import Place from "./place.schema";
 
 const allowedQuery = new Set([
-  "division","paginate", 'page',
+  "division","paginate", 'page', 'search', 'name'
 ]);
-export const register = ({ db }) => async (req, res) => {
+export const register = ({ db, lyra }) => async (req, res) => {
   try {
-    const place = db.create({ table: Place, key: { ...req.body } });
+    const place =await db.create({ table: Place, key: { ...req.body } });
     if (!place) return res.status(400).send('Can not handle this request');
+     await lyra.insert("places", {
+       id: place._id.toString(),
+       name: place.name,
+     });
     res.status(201).send(place);
 
   } catch (error) {
@@ -19,11 +23,18 @@ export const register = ({ db }) => async (req, res) => {
 
 
 export const getPlaces =
-  ({ db }) =>
+  ({ db, lyra }) =>
     async (req, res) => {
+      let searchquery = {};
+      if (req.query.search) {
+        const regx = new RegExp(req.query.search, 'i');
+        searchquery = { 'name': regx };
+        delete req.query.search;
+
+      }
       const places = await db.find({
         table: Place,
-        key: { query: req.query, allowedQuery: allowedQuery, populate: { path:'division'}, paginate: req.query.paginate === 'true'  },
+        key: { query: req.query,...searchquery, allowedQuery: allowedQuery, populate: { path:'division'}, paginate: req.query.paginate === 'true'  },
       });
       if (!places) return res.status(400).send('Bad request');
       res.status(200).send(places);

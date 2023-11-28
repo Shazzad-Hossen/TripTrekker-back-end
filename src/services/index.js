@@ -8,6 +8,7 @@ import order from './order/order';
 import packages from './package/package';
 import payment from './payment/payment';
 import place from './place/place';
+import Post from './post/post';
 import user from './user/user';
 
 export const services = (app) => {
@@ -22,4 +23,5 @@ export const services = (app) => {
   app.configure(order);
   app.configure(payment);
   app.configure(dashboard);
+  app.configure(Post);
 };

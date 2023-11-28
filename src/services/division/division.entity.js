@@ -1,11 +1,13 @@
 
 import Division from './division.schema';
 
-export const register = ({ db }) => async (req, res) => {
+export const register = ({ db, lyra }) => async (req, res) => {
   try {
     const division = await db.create({ table: Division, key: { ...req.body } });
     if (!division) return res.status(400).send('Unsuccessfull');
-    res.status(201).send(division)
+    await lyra.insert('divisions', { id: division._id.toString(), name: division.name });
+    res.status(201).send(division);
+
 
 
   } catch (error) {
@@ -16,16 +18,43 @@ export const register = ({ db }) => async (req, res) => {
 }
 
 export const getDivision =
-  ({ db }) =>
-  async (req, res) => {
-    try {
-      const division = await db.find({ table: Division, key: {paginate: req.query.paginate === 'true' } });
-      if (!division) return res.status(400).send('Failed to get Division data');
-      res.status(200).send(division)
-    } catch (error) {
-      console.log(error);
-      res.status(500).send("Something wents wrong");
-    }
+  ({ db, lyra }) =>
+    async (req, res) => {
+      try {
+          if (req.query.search) {
+            const lyraResult = await lyra.search("divisions", {
+              term: req.query.search,
+              properties: "*",
+            });
+            delete req.query.search;
+
+            if (lyraResult.hits.length > 0) {
+              const ids = lyraResult.hits.map((d) => d.id);
+
+              const division = await db.find({
+                table: Division,
+                key: {
+                  _id: { $in: ids },
+                  paginate: req.query.paginate === "true",
+                },
+              });
+
+              if (!division)
+                return res.status(400).send("Failed to get Division data");
+              return res.status(200).send(division);
+            }
+          }
+          const division = await db.find({
+            table: Division,
+            key: { paginate: req.query.paginate === "true" },
+          });
+          if (!division)
+            return res.status(400).send("Failed to get Division data");
+          res.status(200).send(division);
+        } catch (error) {
+          console.log(error);
+          res.status(500).send("Something wents wrong");
+        }
     };
 
 

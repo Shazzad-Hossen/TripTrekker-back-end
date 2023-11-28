@@ -1,6 +1,7 @@
 import Order from '../order/order.schema';
 import Package from '../package/package.schema';
 import User from "../user/user.schema";
+import Payment from '../payment/payment.schema';
 export const userDashboardData = ({ db }) => async (req, res) => {
   try {
 const userId = req.user._id.toString(); // Assuming req.user contains the user information
@@ -159,7 +160,32 @@ export const adminDashboardData = () => async (req, res) => {
       },
     ]);
 
-    res.status(200).send(result[0]);
+    const result2 = await Package.aggregate([
+      {
+        $group: {
+          _id: null,
+          packsByAgency: {
+            $sum: { $cond: [{ $eq: ["$type", "agency"] }, 1, 0] },
+          },
+          packsByHotel: {
+            $sum: { $cond: [{ $eq: ["$type", "hotel"] }, 1, 0] },
+          },
+        },
+      },
+    ]);
+
+    const result3 = await Payment.aggregate([
+      {
+        $group: {
+          _id: null,
+          totalStoreAmount: { $sum: "$store_amount" },
+        },
+      },
+    ]);
+
+    
+
+    res.status(200).send({ ...result[0], ...result2[0], ...result3[0]});
 
   } catch (error) {
     console.log(error);
