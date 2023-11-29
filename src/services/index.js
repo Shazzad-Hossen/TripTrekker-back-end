@@ -1,4 +1,5 @@
 import agency from './agency/agency';
+import Comment from './comment/comment';
 import dashboard from './dashboard/dashboard';
 import demo from './demo/demo';
 import division from './division/division';
@@ -24,4 +25,5 @@ export const services = (app) => {
   app.configure(payment);
   app.configure(dashboard);
   app.configure(Post);
+  app.configure(Comment);
 };

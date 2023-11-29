@@ -28,3 +28,41 @@ export const addPost = ({ db, fileUp }) => async (req, res) => {
 
   }
 }
+
+
+export const getAllPost = ({ db }) => async (req, res) => {
+  try {
+    const post = await db.find({
+      table: Post,
+      key: { populate: { path: "author", select: "fullName avatar" } },
+    });
+    if (!post) return res.status(400).send('Bad request');
+    res.status(200).send(post);
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Something wents wrong");
+
+
+  }
+}
+
+export const manageLike = ({ db }) => async (req, res) => {
+  try {
+
+    if (!req.body.id) return res.status(400).send('Bad request');
+    const post = await db.findOne({ table: Post, key: { id: req.body.id } });
+    if (!post) return res.status(400).send("Bad request");
+    const isFound = post.like.find(p => p.toString() === req.user?._id.toString());
+    if (isFound) post.like = post.like.filter(p => p.toString() !== req.user?._id.toString());
+    else post.like.push(req.user?._id.toString());
+    await db.save(post);
+    res.status(200).send(post);
+
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Something wents wrong");
+
+  }
+}
