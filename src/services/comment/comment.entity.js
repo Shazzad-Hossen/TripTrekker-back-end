@@ -16,7 +16,7 @@ export const postComment = ({ db }) => async (req, res) => {
     if (!post) return res.status(400).send('Faild to post comment');
     post.comment.push(comment._id);
     await db.save(post);
-    await db.populate(post, {path: 'comment'})
+    await db.populate(post, { path: "author comment location", select: "fullName avatar text author name", populate: { path: 'author', select: 'avatar fullName', strictPopulate: false} })
     res.status(200).send(post);
 
 
