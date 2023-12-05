@@ -13,5 +13,5 @@
   "SSL_STORE_PASSWORD":"tript654628024360f@ssl",
   "SSL_IS_LIVE": false,
   "SERVER_URL": "http://157.230.37.118:4000",
-  "FRONTEND_URL": "http://157.230.37.118:5173"
+  "FRONTEND_URL": "http://157.230.37.118:4000"
 }
