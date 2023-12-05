@@ -1,6 +1,6 @@
 {
-  "port": 80,
-  "origin": ["http://157.230.194.103", "http://157.230.194.103"],
+  "port": 4000,
+  "origin": ["http://157.230.194.103:4000"],
   "SMTP_HOST": "smtp.gmail.com",
   "SMTP_PORT": "465",
   "SMTP_USER": "f0493409@gmail.com",
@@ -12,6 +12,6 @@
   "SSL_STORE_ID":"tript654628024360f",
   "SSL_STORE_PASSWORD":"tript654628024360f@ssl",
   "SSL_IS_LIVE": false,
-  "SERVER_URL": "http://157.230.194.103",
-  "FRONTEND_URL": "http://157.230.194.103"
+  "SERVER_URL": "http://157.230.194.103:4000",
+  "FRONTEND_URL": "http://157.230.194.103:4000"
 }
