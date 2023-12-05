@@ -1,18 +1,17 @@
 {
-  "port": 4000,
-  "origin": [],
-  "useHTTP2": false,
-  "SMTP_HOST": "",
-  "SMTP_PORT": "",
-  "SMTP_USER": "",
-  "SMTP_PASSWORD": "",
-  "EMAIL_NAME": "",
-  "EMAIL_FROM": "from@example.com",
+  "port": 80,
+  "origin": ["http://157.230.194.103:5173", "http://157.230.194.103:80"],
+  "SMTP_HOST": "smtp.gmail.com",
+  "SMTP_PORT": "465",
+  "SMTP_USER": "f0493409@gmail.com",
+  "SMTP_PASSWORD": "krlvlruwshfymdxl",
+  "EMAIL_NAME": "TripTrekker",
+  "EMAIL_FROM": "triptrekker@example.com",
   "MONGODB_URL": "mongodb+srv://shahrin:faSic1PqhVJ0ZLur@cluster0.5zwonxa.mongodb.net/?retryWrites=true&w=majority",
   "SECRET":"TripTrekker",
   "SSL_STORE_ID":"tript654628024360f",
   "SSL_STORE_PASSWORD":"tript654628024360f@ssl",
   "SSL_IS_LIVE": false,
-  "SERVER_URL": "http://localhost:4000",
-  "FRONTEND_URL": "http://localhost:5173"
+  "SERVER_URL": "http://157.230.194.103:80",
+  "FRONTEND_URL": "http://157.230.194.103:80"
 }

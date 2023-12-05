@@ -10,6 +10,7 @@ import packages from './package/package';
 import payment from './payment/payment';
 import place from './place/place';
 import Post from './post/post';
+import Promotion from './promotion/promotion';
 import user from './user/user';
 
 export const services = (app) => {
@@ -26,4 +27,6 @@ export const services = (app) => {
   app.configure(dashboard);
   app.configure(Post);
   app.configure(Comment);
+  app.configure(Promotion);
+
 };

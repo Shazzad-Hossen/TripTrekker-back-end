@@ -71,17 +71,17 @@ export default class App {
     });
 
     // Load the middlewwares
-    // this.express.use(
-    //   cors({
-    //     origin: this.config.origin,
-    //     credentials: true
-    //   }));
-     this.express.use(
-       cors({
-         origin: 'http://localhost:5173',
-         credentials: true,
-       })
-     );
+    this.express.use(
+      cors({
+        origin: this.config.origin,
+        credentials: true
+      }));
+    //  this.express.use(
+    //    cors({
+    //      origin: 'http://localhost:5173',
+    //      credentials: true,
+    //    })
+    //  );
 
     http: this.express.use(morgan("common")); // Logger
     this.express.use(actuator({ infoGitMode: 'full' })); // Health Checker

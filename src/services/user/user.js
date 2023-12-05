@@ -1,5 +1,5 @@
 import { auth, checkRole } from '../middlewares';
-import { getAll, login, logout, me, register, remove, updateOwn, updateUser, uploadFiles, userProfile } from './user.entity';
+import { ResetPassword, forgotPassword, getAll, login, logout, me, register, remove, updateOwn, updateUser, uploadFiles, userProfile, verifyOtp } from './user.entity';
 
 export default function user() {
   /**
@@ -64,9 +64,33 @@ export default function user() {
    * @response {Object} 200 - the user.
    */
   this.route.delete(
-    "/user/:id", auth, checkRole(["admin", "super-admin"]), remove(this)
+    "/user/:id",
+    auth,
+    checkRole(["admin", "super-admin"]),
+    remove(this)
   );
 
+  /**
+   * POST ‘/user/forgotpass’
+   * @description this route is used to send otp to user email for resetting password.
+   * @response {Object} 200 - the user.
+   */
 
+  this.route.post("/user/forgotpass", forgotPassword(this));
 
+  /**
+   * POST ‘/user/verifyotp
+   * @description this route is used to verify otp.
+   * @response {Object} 200 - the user.
+   */
+
+  this.route.post("/user/verifyotp", verifyOtp(this));
+
+  /**
+   * POST ‘/user/verifyotp
+   * @description this route is used to verify otp.
+   * @response {Object} 200 - the user.
+   */
+
+  this.route.post("/user/resetpassword", ResetPassword(this));
 }

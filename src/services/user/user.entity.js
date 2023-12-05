@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import User from './user.schema';
+import { sendOtpTemplate } from '../../controllers/email/template';
 
 
 /**
@@ -35,11 +36,11 @@ export const register = ({ db }) => async (req, res) => {
  */
 export const login = ({ db, settings }) => async (req, res) => {
   try {
-    if (!req.body.email || !req.body.password) return res.status(400).send('Bad requests');
+    if (!req.body.email || !req.body.password) return res.status(400).send('Bad request');
     const user = await db.findOne({ table: User, key: { email: req.body.email, populate: { path: 'agency hotel'} } });
-    if (!user) return res.status(401).send('NO user exist with this email');
+    if (!user) return res.status(401).send('No user exist with this email');
     const isValid = await bcrypt.compare(req.body.password, user.password);
-    if (!isValid) return res.status(401).send('Unauthorized');
+    if (!isValid) return res.status(401).send('Wrong Password');
     const token = jwt.sign({ id: user.id }, settings.SECRET);
     res.cookie(settings.SECRET, token, {
       httpOnly: true,
@@ -217,3 +218,67 @@ export const remove = ({ db }) => async (req, res) => {
 };
 
 
+export const forgotPassword = ({db, settings, mail}) => async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email) return res.status(400).send('Bad request');
+    const user = db.findOne({ table: User, key: { email } });
+    if (!user) return res.status(400).send("Bad request");
+    const otp = Math.floor(1000 + Math.random() * 9000);
+    const token = jwt.sign({ email, otp, time: new Date() }, settings.SECRET);
+     const mailRes = await mail({
+       receiver: req.body.email,
+       subject: "TripTrekker- Password Reset OTP",
+       body: sendOtpTemplate(otp),
+       type: "html",
+     });
+     if (!mailRes) return res?.status(400).send("Forbidden");
+    res.status(200).send(token);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: "Something went wrong" });
+
+  }
+}
+
+
+export const verifyOtp = ({settings}) => async (req, res) => {
+  try {
+    const { email, token, otp } = req.body;
+    if (!email || !token || !otp) return res.status(400).send('Bad request');
+    const decryptedToken = jwt.verify(token, settings.SECRET);
+    if (decryptedToken.email !== email) return res.status(400).send('Bad Request');
+    if (decryptedToken.otp !== otp) return res.status(400).send("Invalid Otp");
+    if(Math.abs(new Date() - new Date(decryptedToken.time))>300000) return res.status(400).send("Otp has been expired");
+    const newToken = jwt.sign({ email, time: new Date() }, settings.SECRET);
+    res.status(200).send(newToken);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: "Something went wrong" });
+
+  }
+}
+
+
+export const ResetPassword = ({ db, settings }) => async (req, res) => {
+  try {
+    const { email, token, password } = req.body;
+    if (!email || !token || !password) return res.status(400).send("Bad request 1");
+    const decryptedToken = jwt.verify(token, settings.SECRET);
+    if (decryptedToken.email !== email) return res.status(400).send("Bad Request 2");
+    if (Math.abs(new Date() - new Date(decryptedToken.time)) > 300000) return res.status(400).send("Otp has been expired");
+    const newPassword = await bcrypt.hash(password, 8);
+    const user = await db.findOne({ table: User, key: { email: email } });
+    if (!user) return res.status(400).send("Bad request 3");
+    user.password = newPassword;
+    await db.save(user);
+    return res.status(200).send(user)
+
+
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: "Something went wrong" });
+
+  }
+}

@@ -15,7 +15,7 @@ export default function Post() {
    * @description This route is used to get All Post.
    * @response {Object} 200 - the new user.
    */
-  this.route.get("/post", auth, getAllPost(this));
+  this.route.get("/post", getAllPost(this));
 
   /**
    * POST /post/like
