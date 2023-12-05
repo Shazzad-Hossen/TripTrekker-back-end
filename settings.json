@@ -1,6 +1,7 @@
 {
   "port": 80,
   "origin": ["*"],
+   "useHTTP2": true,
   "SMTP_HOST": "smtp.gmail.com",
   "SMTP_PORT": "465",
   "SMTP_USER": "f0493409@gmail.com",
