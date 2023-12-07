@@ -13,6 +13,6 @@
   "SSL_STORE_ID":"tript654628024360f",
   "SSL_STORE_PASSWORD":"tript654628024360f@ssl",
   "SSL_IS_LIVE": false,
-  "SERVER_URL": "http://triptrekker.online",
-  "FRONTEND_URL": "http://triptrekker.online"
+  "SERVER_URL": "https://triptrekker.online",
+  "FRONTEND_URL": "https://triptrekker.online"
 }
