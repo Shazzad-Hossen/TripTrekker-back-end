@@ -22,9 +22,7 @@ export const register = ({ db, lyra }) => async (req, res) => {
 }
 
 
-export const getPlaces =
-  ({ db, lyra }) =>
-    async (req, res) => {
+export const getPlaces = ({ db }) => async (req, res) => {
       let searchquery = {};
       if (req.query.search) {
         const regx = new RegExp(req.query.search, 'i');

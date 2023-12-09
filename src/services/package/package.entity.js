@@ -2,7 +2,7 @@ import Package from './package.schema';
 import User from "../user/user.schema";
 
 
-const allowedQuery = new Set(['status','type', 'sortBy', 'status', 'paginate', 'place', 'hotel', 'agency', 'hotel', 'limit', 'search', 'id']);
+const allowedQuery = new Set(['status','type', 'sortBy', 'status', 'paginate', 'place', 'hotel', 'agency', 'hotel', 'limit', 'search', 'id', 'page']);
 
 export const registerPackage = ({ db, lyra }) => async (req, res) => {
   try {
