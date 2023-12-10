@@ -1,7 +1,6 @@
 import Order from './order.schema'
 import Package from '../package/package.schema'
-import mongoose from 'mongoose';
-const allowedQuery = new Set(["userId", "status", "sortBy", "hotel", "agency"]);
+const allowedQuery = new Set(["userId", "status", "sortBy", "hotel", "agency", 'page']);
 
 
 export const registerOrder = ({ db }) => async (req, res) => {

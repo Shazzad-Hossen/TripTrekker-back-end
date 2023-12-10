@@ -1,6 +1,6 @@
 import Agency from './agency.schema';
 import User from "../user/user.schema";
-const allowedQuery = new Set(['status']);
+const allowedQuery = new Set(['status', 'page']);
 export const registerAgency = ({ db }) => async (req, res) => {
   try {
 
