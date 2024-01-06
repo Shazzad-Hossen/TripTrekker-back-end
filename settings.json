@@ -1,17 +1,18 @@
 {
-  "port": 4000,
-  "origin": ["http://localhost:5173", "https://ybk9zz-ip-103-205-134-10.tunnelmole.net/", "http://ybk9zz-ip-103-205-134-10.tunnelmole.net/"],
+  "port": 80,
+  "origin": ["*"],
+   "useHTTP2": false,
   "SMTP_HOST": "smtp.gmail.com",
   "SMTP_PORT": "465",
   "SMTP_USER": "f0493409@gmail.com",
   "SMTP_PASSWORD": "krlvlruwshfymdxl",
   "EMAIL_NAME": "TripTrekker",
   "EMAIL_FROM": "triptrekker@example.com",
-  "MONGODB_URL": "mongodb+srv://shahrin:faSic1PqhVJ0ZLur@cluster0.5zwonxa.mongodb.net/?retryWrites=true&w=majority",
+  "MONGODB_URL": "mongodb+srv://shahrin:faSic1PqhVJ0ZLur@cluster0.5zwonxa.mongodb.net/shahrin-triptrekker",
   "SECRET":"TripTrekker",
   "SSL_STORE_ID":"tript654628024360f",
   "SSL_STORE_PASSWORD":"tript654628024360f@ssl",
   "SSL_IS_LIVE": false,
-  "SERVER_URL": "http://localhost:4000",
-  "FRONTEND_URL": "http://localhost:5173"
+  "SERVER_URL": "http://triptrekker.online",
+  "FRONTEND_URL": "http://triptrekker.online"
 }

@@ -222,12 +222,12 @@ export const forgotPassword = ({db, settings, mail}) => async (req, res) => {
   try {
     const { email } = req.body;
     if (!email) return res.status(400).send('Bad request');
-    const user = db.findOne({ table: User, key: { email } });
+    const user = await db.findOne({ table: User, key: { email } });
     if (!user) return res.status(400).send("Bad request");
     const otp = Math.floor(1000 + Math.random() * 9000);
     const token = jwt.sign({ email, otp, time: new Date() }, settings.SECRET);
      const mailRes = await mail({
-       receiver: req.body.email,
+       receiver: email,
        subject: "TripTrekker- Password Reset OTP",
        body: sendOtpTemplate(otp),
        type: "html",
@@ -263,13 +263,13 @@ export const verifyOtp = ({settings}) => async (req, res) => {
 export const ResetPassword = ({ db, settings }) => async (req, res) => {
   try {
     const { email, token, password } = req.body;
-    if (!email || !token || !password) return res.status(400).send("Bad request 1");
+    if (!email || !token || !password) return res.status(400).send("Bad request");
     const decryptedToken = jwt.verify(token, settings.SECRET);
-    if (decryptedToken.email !== email) return res.status(400).send("Bad Request 2");
+    if (decryptedToken.email !== email) return res.status(400).send("Bad Request");
     if (Math.abs(new Date() - new Date(decryptedToken.time)) > 300000) return res.status(400).send("Otp has been expired");
     const newPassword = await bcrypt.hash(password, 8);
     const user = await db.findOne({ table: User, key: { email: email } });
-    if (!user) return res.status(400).send("Bad request 3");
+    if (!user) return res.status(400).send("Bad request");
     user.password = newPassword;
     await db.save(user);
     return res.status(200).send(user)

@@ -17,7 +17,7 @@ export default function place() {
 
   /**
    * GET /place/:id
-   * @description This route is used to create a user.
+   * @description This route is used to get data of a single Place.
    * @response {Object} 200 - the new user.
    */
   this.route.get("/place/:id", singlePlace(this));

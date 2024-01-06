@@ -96,7 +96,7 @@ export const hotelDashboardData = () => async (req, res) => {
     const result = await Order.aggregate([
       {
         $match: {
-          hotel: req.user.hotel.toString(),
+          hotel: req.user?.hotel?.toString(),
         },
       },
       {
@@ -183,7 +183,7 @@ export const adminDashboardData = () => async (req, res) => {
       },
     ]);
 
-    
+
 
     res.status(200).send({ ...result[0], ...result2[0], ...result3[0]});
 

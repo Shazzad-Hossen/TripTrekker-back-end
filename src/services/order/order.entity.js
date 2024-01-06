@@ -7,7 +7,7 @@ export const registerOrder = ({ db }) => async (req, res) => {
   try {
     const pack = await db.findOne({ table: Package, key: { id: req.body.package } });
     if (!pack) return res.status(400).send('Bad Request');
-    console.log(pack);
+  
     if (req.body.type === 'hotel') {
     const [year1, month1, day1] = req.body.date.split("-").map(Number);
     const [year2, month2, day2] = req.body.endDate.split("-").map(Number);
