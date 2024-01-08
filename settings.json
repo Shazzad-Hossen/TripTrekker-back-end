@@ -1,6 +1,6 @@
 {
   "port": 4000,
-  "origin": ["http://localhost:5173", "https://ybk9zz-ip-103-205-134-10.tunnelmole.net/", "http://ybk9zz-ip-103-205-134-10.tunnelmole.net/"],
+  "origin": ["http://localhost:5173", "https://ybk9zz-ip-103-205-134-10.tunnelmole.net/", ""],
   "SMTP_HOST": "smtp.gmail.com",
   "SMTP_PORT": "465",
   "SMTP_USER": "f0493409@gmail.com",
