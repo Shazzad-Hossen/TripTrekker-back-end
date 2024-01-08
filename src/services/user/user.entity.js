@@ -155,6 +155,7 @@ const setPassword = async ({ oldPass, newPass, user }) => {
  */
 export const updateOwn = ({ db }) => async (req, res) => {
 
+
   try {
     if (req?.body?.password && req?.body?.newPassword) {
       req.body.password = await setPassword({

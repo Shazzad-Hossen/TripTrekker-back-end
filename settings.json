@@ -7,7 +7,7 @@
   "SMTP_PASSWORD": "krlvlruwshfymdxl",
   "EMAIL_NAME": "TripTrekker",
   "EMAIL_FROM": "triptrekker@example.com",
-  "MONGODB_URL": "mongodb+srv://shahrin:faSic1PqhVJ0ZLur@cluster0.5zwonxa.mongodb.net/?retryWrites=true&w=majority",
+  "MONGODB_URL": "mongodb+srv://shahrin:faSic1PqhVJ0ZLur@cluster0.5zwonxa.mongodb.net/shahrin-triptrekker",
   "SECRET":"TripTrekker",
   "SSL_STORE_ID":"tript654628024360f",
   "SSL_STORE_PASSWORD":"tript654628024360f@ssl",
